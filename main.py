@@ -2,7 +2,7 @@ import sys
 from sqlite3 import connect
 from pandas import DataFrame,read_sql,Series
 from tabulate import tabulate
-conn = connect("chd2.db")
+conn = connect("DataBase.db")
 cur = conn.cursor();
 
 class Storage:
@@ -65,7 +65,6 @@ class Storage:
 ##        self.sem4_credit = {'MA8451':4,'EC8452':3,'EC8491':3,'EC8451':4,'EC8453':3,'GE8291':3,'EC8461':2,'EC8462':2}
 
 class display:
-    
     def __init__(self):
         self.regulation = 0;
         self.semester = 0;
@@ -159,19 +158,20 @@ class display:
         elif(val == 9):
             self.paths();
         else:
-            print("\n***** Wrong Input *****")
+            print("\n ***** Wrong Input *****")
             self.semester_select();
 
-    def cgpa_calc(self):
-        print("\n----- CGPA CALCULATOR ----- ")
-        name = input("\n Enter the Roll number or exit:").upper()
-        s = 0;
-        tot = 0;
-        if name == "":
-            print("***** Invalid name *****")
-            self.paths();
+    def cgpa_calc(self,name =""):
+        if(name == ""):
+            print("\n ----- CGPA CALCULATOR ----- ")
+            name = input("\n Enter the Roll number or exit:").upper()
+            s = 0;
+            tot = 0;
+            if name == "":
+                print("\n ***** Invalid Number *****")
+                return;
         if name == "EXIT":
-            self.paths();
+            return;
         else:
             ls = []
             cgpa_total=0
@@ -184,15 +184,12 @@ class display:
                 ans = cur.execute("select Total,Sum,GPA from {} where Regno = '{}'".format(i,name))
                 temp = ans.fetchall()
                 if(temp != []):
-                    print("\n",i[0:4],"GPA is : %.2f" %(float(temp[0][2])))
                     cgpa_total += int(temp[0][0])
                     cgpa_sum += int(temp[0][1])
             if(cgpa_total == 0 or cgpa_sum == 0):
                 print("\n ***** Roll Number not found *****")
-                self.cgpa_calc();
             else:
                 print("\n CGPA for "+ name +" is : %.2f" %(cgpa_sum/cgpa_total))
-                self.cgpa_calc();
         
     def paths(self):
         print("\n 1)GPA Calculation \t 2)CGPA Calculation \t 3)Settings \n\n 4)Arrear Updation \t 5)Go Back")
@@ -203,7 +200,8 @@ class display:
         if(way == 1):
             dis.semester_select()
         elif(way == 2):
-            self.cgpa_calc()
+            self.cgpa_calc("")
+            self.paths();
         elif(way == 3):
             dis.gear();
         elif(way == 4):
@@ -264,6 +262,7 @@ class display:
                 cur.execute("insert into {} values {};".format(tb_name,ls))
                 conn.commit();
                 print("\n\tGPA is : %.3f"%gpa)
+                self.cgpa_calc(name);
             else:
                 print("\n ----- Name Already Found -----")
                 self.grade_select(val);
@@ -289,12 +288,100 @@ class display:
                 print("\n***** Wrong Input *****")
                 self.a_update();
             elif(rollno == "EXIT"):
-                dis.paths();
+                dis.paths();import sys
+2
+from sqlite3 import connect
+3
+from pandas import DataFrame,read_sql,Series
+4
+from tabulate import tabulate
+5
+conn = connect("chd2.db")
+6
+cur = conn.cursor();
+7
+​
+8
+class Storage:
+9
+    def __init__(self):
+10
+        self.gra21 = {}
+11
+        self.gra17 = {}
+12
+        self.sem1_credit = {}
+13
+        self.sem2_credit = {}
+14
+        self.sem3_credit = {}
+15
+        self.sem4_credit = {}
+16
+        self.extra = []
+17
+        self.default();   
+18
+    def default(self):
+19
+##        self.gra21 = {'O':10,'A+':9,'A':8,'B+':7,'B':6,'C':5,'U':0}
+20
+##        self.gra17 = {'O':10,'A+':9,'A':8,'B+':7,'B':6,'U':0}
+21
+##    def sem_credit(self):
+22
+        res = cur.execute("select tbl_name from sqlite_master where type='table'")
+23
+        if(res.fetchall() == []):
+24
+            cur.execute("create table default_credit_17('O' Ineger,'A+' Integer,'A' Integer, 'B+' Integer,'B' Integer ,'U' Integer)")
+25
+            cur.execute("insert into default_credit_17 values (10, 9, 8, 7, 6, 0);")
+26
+            
+27
+            cur.execute("create table sem1_credit_points_17 ('HS8151' Integer, 'MA8151' Integer, 'PH8151' Integer, 'CY8151' Integer, 'GE8151' Integer, 'GE8152' Integer, 'GE8161'Integer, 'BS8161' Integer);")
+28
+            cur.execute("create table sem2_credit_points_17 ('HS8251' Integer, 'MA8251' Integer, 'PH8253' Integer, 'BE8254' Integer, 'EC8251' Integer, 'EC8252' Integer, 'EC8261'Integer, 'GE8261' Integer);")
+29
+            cur.execute("create table sem3_credit_points_17 ('MA8352' Integer, 'EC8393' Integer, 'EC8351' Integer, 'EC8352' Integer, 'EC8392' Integer, 'EC8391' Integer, 'EC8381'Integer, 'EC8361' Integer,'HS8381' Integer);")
+30
+            cur.execute("create table sem4_credit_points_17 ('MA8451' Integer, 'EC8452' Integer, 'EC8491' Integer, 'EC8451' Integer, 'EC8453' Integer, 'GE8291' Integer, 'EC8461'Integer, 'EC8462' Integer);")
+31
+            cur.execute("create table sem5_credit_points_17 (EC8501 Integer,EC8553 Integer,EC8552 Integer,EC8551 Integer,EC8562 Integer,EC8561 Integer,EC8563 Integer);");
+32
+            cur.execute("create table sem6_credit_points_17 (EC8691 Integer,EC8095 Integer,EC8652 Integer,MG8591 Integer,EC8651 Integer,EC8681 Integer,EC8661 Integer,EC8611 Integer,HS8581 Integer);");
+33
+            cur.execute("create table sem7_credit_points_17 (EC8701 Integer,EC8751 Integer,EC8791 Integer,EC8702 Integer,EC8711 Integer,EC8761 Integer);")
+34
+            cur.execute("create table sem8_credit_points_17 (EC8811 Integer)");
+35
+​
+36
+            cur.execute("insert into sem1_credit_points_17 values (4, 4, 3, 3, 3, 4, 2, 2);")
+37
+            cur.execute("insert into sem2_credit_points_17 values (4, 4, 3, 3, 4, 3, 2, 2);")
+38
+            cur.execute("insert into sem3_credit_points_17 values (4, 3, 3, 4, 3, 3, 2, 2, 1);")
+39
+            cur.execute("insert into sem4_credit_points_17 values (4, 3, 3, 4, 3, 3, 2, 2);")
+40
+            cur.execute("insert into sem5_credit_points_17 values(3,4,3,3,2,2,2);")
+41
+            cur.execute("insert into sem6_credit_points_17 values(3,3,3,3,3,2,2,1,1);")
+42
+            cur.execute("insert into sem7_credit_points_17 values(3,3,3,3,2,2);")
+43
+            cur.execute("insert into sem8_credit_points_17 values(10);")
+44
+                    
+45
+            cur.execute("create table sem1_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,'HS8151' varchar, 'MA8151' varchar, 'PH8151' varchar, 'CY8151' varchar, 'GE8151' varchar, 'GE8152' varchar, 'GE8161'varchar, 'BS8161' varchar);")
             elif(res.fetchall() == []):
                 print("\n***** Roll Number Not Found *****")
                 self.a_update();
             else:
-                self.printer("select * from sem{}_credits_{}".format(num,dis.regulation))
+                self.printer("select * from sem{}_credits_{} where Regno = '{}'".format(num,dis.regulation,rollno))
                 name = input("\n Enter the subject code (or) exit: ").upper().strip();
                 res = cur.execute("select * from sem{}_credit_points_{}".format(num,dis.regulation));
                 ls = []
@@ -343,8 +430,10 @@ class display:
                             sum1 = int(ls[1]) + (st.gra21[gra]*sc[name])
                         cur.execute("update sem{0}_credits_{1} set Total = '{2}',Sum = '{3}',GPA = '{4}',{5}='{6}' where Regno = '{7}'".format(num,dis.regulation,tot1,sum1,(sum1/tot1),name,gra,rollno))
                         conn.commit();
-                        self.printer("select * from sem{0}_credits_{1}".format(num,dis.regulation))
+                        self.printer("select * from sem{0}_credits_{1} where Regno = '{2}'".format(num,dis.regulation,rollno))
                         print("\n Successfully Updated...")
+                        print("\n After updation GPA is %.2f" %(sum1/tot1))
+                        self.cgpa_calc(rollno)
                         self.a_update();    
     
     def printer(self,content):
@@ -426,7 +515,7 @@ class settings:
                 
     def add_new_sub(self):
         global st;
-        print("\n ----- Entrole new subject -----")
+        print("\n ----- Enroll new subject -----")
         try:
             print("\n 1,2,3,.... 8  9) Go Back ")
             num = int(input("\n Enter the Semester number : "))
