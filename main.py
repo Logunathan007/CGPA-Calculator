@@ -2,7 +2,7 @@ import sys
 from sqlite3 import connect
 from pandas import DataFrame,read_sql,Series
 from tabulate import tabulate
-conn = connect("DataBase.db")
+conn = connect("new.db")
 cur = conn.cursor();
 
 class Storage:
@@ -19,45 +19,114 @@ class Storage:
 ##        self.gra21 = {'O':10,'A+':9,'A':8,'B+':7,'B':6,'C':5,'U':0}
 ##        self.gra17 = {'O':10,'A+':9,'A':8,'B+':7,'B':6,'U':0}
 ##    def sem_credit(self):
+
+##            
+##            cur.execute("create table sem1_credit_points_17 ('HS8151' Integer, 'MA8151' Integer, 'PH8151' Integer, 'CY8151' Integer, 'GE8151' Integer, 'GE8152' Integer, 'GE8161'Integer, 'BS8161' Integer);")
+##            cur.execute("create table sem2_credit_points_17 ('HS8251' Integer, 'MA8251' Integer, 'PH8253' Integer, 'BE8254' Integer, 'EC8251' Integer, 'EC8252' Integer, 'EC8261'Integer, 'GE8261' Integer);")
+##            cur.execute("create table sem3_credit_points_17 ('MA8352' Integer, 'EC8393' Integer, 'EC8351' Integer, 'EC8352' Integer, 'EC8392' Integer, 'EC8391' Integer, 'EC8381'Integer, 'EC8361' Integer,'HS8381' Integer);")
+##            cur.execute("create table sem4_credit_points_17 ('MA8451' Integer, 'EC8452' Integer, 'EC8491' Integer, 'EC8451' Integer, 'EC8453' Integer, 'GE8291' Integer, 'EC8461'Integer, 'EC8462' Integer);")
+##            cur.execute("create table sem5_credit_points_17 (EC8501 Integer,EC8553 Integer,EC8552 Integer,EC8551 Integer,EC8562 Integer,EC8561 Integer,EC8563 Integer);");
+##            cur.execute("create table sem6_credit_points_17 (EC8691 Integer,EC8095 Integer,EC8652 Integer,MG8591 Integer,EC8651 Integer,EC8681 Integer,EC8661 Integer,EC8611 Integer,HS8581 Integer);");
+##            cur.execute("create table sem7_credit_points_17 (EC8701 Integer,EC8751 Integer,EC8791 Integer,EC8702 Integer,EC8711 Integer,EC8761 Integer);")
+##            cur.execute("create table sem8_credit_points_17 (EC8811 Integer)");
+##
+##            cur.execute("insert into sem1_credit_points_17 values (4, 4, 3, 3, 3, 4, 2, 2);")
+##            cur.execute("insert into sem2_credit_points_17 values (4, 4, 3, 3, 4, 3, 2, 2);")
+##            cur.execute("insert into sem3_credit_points_17 values (4, 3, 3, 4, 3, 3, 2, 2, 1);")
+##            cur.execute("insert into sem4_credit_points_17 values (4, 3, 3, 4, 3, 3, 2, 2);")
+##            cur.execute("insert into sem5_credit_points_17 values(3,4,3,3,2,2,2);")
+##            cur.execute("insert into sem6_credit_points_17 values(3,3,3,3,3,2,2,1,1);")
+##            cur.execute("insert into sem7_credit_points_17 values(3,3,3,3,2,2);")
+##            cur.execute("insert into sem8_credit_points_17 values(10);")
+##                    
+##            cur.execute("create table sem1_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,'HS8151' varchar, 'MA8151' varchar, 'PH8151' varchar, 'CY8151' varchar, 'GE8151' varchar, 'GE8152' varchar, 'GE8161'varchar, 'BS8161' varchar);")
+##            cur.execute("create table sem2_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,'HS8251' varchar, 'MA8251' varchar, 'PH8253' varchar, 'BE8254' varchar, 'EC8251' varchar, 'EC8252' varchar, 'EC8261'varchar, 'GE8261' varchar);")
+##            cur.execute("create table sem3_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,'MA8352' varchar, 'EC8393' varchar, 'EC8351' varchar, 'EC8352' varchar, 'EC8392' varchar, 'EC8391' varchar, 'EC8381'varchar, 'EC8361' varchar,'HS8381' varchar);")
+##            cur.execute("create table sem4_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,'MA8451' varchar, 'EC8452' varchar, 'EC8491' varchar, 'EC8451' varchar, 'EC8453' varchar, 'GE8291' varchar, 'EC8461'varchar, 'EC8462' varchar);")
+##            cur.execute("create table sem5_credits_17(Sem varchar(20),Regno varchar(20) primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,EC8501 varchar(20),EC8553 varchar(20),EC8552 varchar(20),EC8551 varchar(20),EC8562 varchar(20),EC8561 varchar(20),EC8563 varchar(20));")
+##            cur.execute("create table sem6_credits_17(Sem varchar(20),Regno varchar(20) primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,EC8691 varchar(20),EC8095 varchar(20),EC8652 varchar(20),MG8591 varchar(20),EC8651 varchar(20),EC8681 varchar(20),EC8661 varchar(20),EC8611 varchar(20),HS8581 varchar(20));")
+##            cur.execute("create table sem7_credits_17(Sem varchar(20),Regno varchar(20) primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,EC8701 varchar(20),EC8751 varchar(20),EC8791 varchar(20),EC8702 varchar(20),EC8711 varchar(20),EC8761 varchar(20));")
+##            cur.execute("create table sem8_credits_17(Sem varchar(20),Regno varchar(20) primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,EC8811 varchar(20));")
+##    
+##            conn.commit()
+##        res = cur.execute("select * from default_credit_17")
+##        val = res.fetchall()
+##        col = res.description
+##        for i in range(len(col)):
+##            self.gra17[col[i][0]] = val[0][i]
+
         res = cur.execute("select tbl_name from sqlite_master where type='table'")
         if(res.fetchall() == []):
-            cur.execute("create table default_credit_17('O' Ineger,'A+' Integer,'A' Integer, 'B+' Integer,'B' Integer ,'U' Integer)")
+            cur.execute("create table default_credit_17('O' Integer,'A+' Integer,'A' Integer, 'B+' Integer,'B' Integer ,'U' Integer)")
             cur.execute("insert into default_credit_17 values (10, 9, 8, 7, 6, 0);")
-            
-            cur.execute("create table sem1_credit_points_17 ('HS8151' Integer, 'MA8151' Integer, 'PH8151' Integer, 'CY8151' Integer, 'GE8151' Integer, 'GE8152' Integer, 'GE8161'Integer, 'BS8161' Integer);")
-            cur.execute("create table sem2_credit_points_17 ('HS8251' Integer, 'MA8251' Integer, 'PH8253' Integer, 'BE8254' Integer, 'EC8251' Integer, 'EC8252' Integer, 'EC8261'Integer, 'GE8261' Integer);")
-            cur.execute("create table sem3_credit_points_17 ('MA8352' Integer, 'EC8393' Integer, 'EC8351' Integer, 'EC8352' Integer, 'EC8392' Integer, 'EC8391' Integer, 'EC8381'Integer, 'EC8361' Integer,'HS8381' Integer);")
-            cur.execute("create table sem4_credit_points_17 ('MA8451' Integer, 'EC8452' Integer, 'EC8491' Integer, 'EC8451' Integer, 'EC8453' Integer, 'GE8291' Integer, 'EC8461'Integer, 'EC8462' Integer);")
-            cur.execute("create table sem5_credit_points_17 (EC8501 Integer,EC8553 Integer,EC8552 Integer,EC8551 Integer,EC8562 Integer,EC8561 Integer,EC8563 Integer);");
-            cur.execute("create table sem6_credit_points_17 (EC8691 Integer,EC8095 Integer,EC8652 Integer,MG8591 Integer,EC8651 Integer,EC8681 Integer,EC8661 Integer,EC8611 Integer,HS8581 Integer);");
-            cur.execute("create table sem7_credit_points_17 (EC8701 Integer,EC8751 Integer,EC8791 Integer,EC8702 Integer,EC8711 Integer,EC8761 Integer);")
-            cur.execute("create table sem8_credit_points_17 (EC8811 Integer)");
 
-            cur.execute("insert into sem1_credit_points_17 values (4, 4, 3, 3, 3, 4, 2, 2);")
-            cur.execute("insert into sem2_credit_points_17 values (4, 4, 3, 3, 4, 3, 2, 2);")
-            cur.execute("insert into sem3_credit_points_17 values (4, 3, 3, 4, 3, 3, 2, 2, 1);")
-            cur.execute("insert into sem4_credit_points_17 values (4, 3, 3, 4, 3, 3, 2, 2);")
-            cur.execute("insert into sem5_credit_points_17 values(3,4,3,3,2,2,2);")
-            cur.execute("insert into sem6_credit_points_17 values(3,3,3,3,3,2,2,1,1);")
-            cur.execute("insert into sem7_credit_points_17 values(3,3,3,3,2,2);")
-            cur.execute("insert into sem8_credit_points_17 values(10);")
-                    
-            cur.execute("create table sem1_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,'HS8151' varchar, 'MA8151' varchar, 'PH8151' varchar, 'CY8151' varchar, 'GE8151' varchar, 'GE8152' varchar, 'GE8161'varchar, 'BS8161' varchar);")
-            cur.execute("create table sem2_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,'HS8251' varchar, 'MA8251' varchar, 'PH8253' varchar, 'BE8254' varchar, 'EC8251' varchar, 'EC8252' varchar, 'EC8261'varchar, 'GE8261' varchar);")
-            cur.execute("create table sem3_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,'MA8352' varchar, 'EC8393' varchar, 'EC8351' varchar, 'EC8352' varchar, 'EC8392' varchar, 'EC8391' varchar, 'EC8381'varchar, 'EC8361' varchar,'HS8381' varchar);")
-            cur.execute("create table sem4_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,'MA8451' varchar, 'EC8452' varchar, 'EC8491' varchar, 'EC8451' varchar, 'EC8453' varchar, 'GE8291' varchar, 'EC8461'varchar, 'EC8462' varchar);")
-            cur.execute("create table sem5_credits_17(Sem varchar(20),Regno varchar(20) primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,EC8501 varchar(20),EC8553 varchar(20),EC8552 varchar(20),EC8551 varchar(20),EC8562 varchar(20),EC8561 varchar(20),EC8563 varchar(20));")
-            cur.execute("create table sem6_credits_17(Sem varchar(20),Regno varchar(20) primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,EC8691 varchar(20),EC8095 varchar(20),EC8652 varchar(20),MG8591 varchar(20),EC8651 varchar(20),EC8681 varchar(20),EC8661 varchar(20),EC8611 varchar(20),HS8581 varchar(20));")
-            cur.execute("create table sem7_credits_17(Sem varchar(20),Regno varchar(20) primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,EC8701 varchar(20),EC8751 varchar(20),EC8791 varchar(20),EC8702 varchar(20),EC8711 varchar(20),EC8761 varchar(20));")
-            cur.execute("create table sem8_credits_17(Sem varchar(20),Regno varchar(20) primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,EC8811 varchar(20));")
-    
-            conn.commit()
+            cur.execute("create table default_credit_21('O' Integer,'A+' Integer,'A' Integer, 'B+' Integer,'B' Integer ,'C' Integer, 'U' Integer)")
+            cur.execute("insert into default_credit_21 values (10, 9, 8, 7, 6, 5, 0);")
+
+            cur.execute("create table sem1_credit_points_17 (CY8151 integer, GE8151 integer, GE8152 integer, HS8151 integer, MA8151 integer, PH8151 Integer, BS8161 Integer, GE8161 Integer)")
+            cur.execute("insert into sem1_credit_points_17 values (3,3,4,4,4,3,2,2)")
+            cur.execute("create table sem2_credit_points_17 (BE8254 integer, EC8251 integer, EC8252 integer, HS8251 integer, MA8251 integer, PH8253 Integer, EC8261 Integer, GE8261 Integer)")
+            cur.execute("insert into sem2_credit_points_17 values (3,4,3,4,4,3,2,2)");
+            cur.execute("create table sem3_credit_points_17 (EC8391 integer, HS8381 integer, MA8352 integer, EC8381 integer, EC8351 integer, EC8352 Integer, EC8392 Integer, EC8393 Integer, EC8361 Ineteger)")
+            cur.execute("insert into sem3_credit_points_17 values (3,1,4,2,3,4,3,3,2)");
+            cur.execute("create table sem4_credit_points_17 (EC8453 integer, EC8452 integer, GE8291 integer, EC8461 integer, EC8491 integer, MA8451 Integer, EC8451 Integer, EC8462 Integer)")
+            cur.execute("insert into sem4_credit_points_17 values (3,3,3,2,3,4,4,2)");
+            cur.execute("create table sem5_credit_points_17 (EC8553 integer, EC8551 integer, EC8501 integer, EC8563 integer, EC8561 integer, EC8552 Integer, EC8562 Integer)")
+            cur.execute("insert into sem5_credit_points_17 values (4,3,3,2,2,3,2)");
+            cur.execute("create table sem6_credit_points_17 (EC8681 integer, HS8581 integer, EC8611 integer, EC8651 integer, EC8095 integer, EC8652 Integer, MG8591 Integer, EC8661 Integer, EC8691 Integer)")
+            cur.execute("insert into sem6_credit_points_17 values (2,1,1,3,3,3,3,2,3)");
+            cur.execute("create table sem7_credit_points_17 (EC8701 integer, EC8702 integer, EC8751 integer, EC8791 integer, EC8711 integer, EC8761 Integer)")
+            cur.execute("insert into sem7_credit_points_17 values (3,3,3,3,2,2)");            
+            cur.execute("create table sem8_credit_points_17 (EC8811 Integer)")
+            cur.execute("insert into sem8_credit_points_17 values (10)");
+
+            cur.execute("create table sem1_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,CY8151 varchar(2), GE8151 varchar(2), GE8152 varchar(2), HS8151 varchar(2), MA8151 varchar(2), PH8151 varchar(2), BS8161 varchar(2), GE8161 varchar(2))")
+            cur.execute("create table sem2_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,BE8254 varchar(2), EC8251 varchar(2), EC8252 varchar(2), HS8251 varchar(2), MA8251 varchar(2), PH8253 varchar(2), EC8261 varchar(2), GE8261 varchar(2))")
+            cur.execute("create table sem3_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,EC8391 varchar(2), HS8381 varchar(2), MA8352 varchar(2), EC8381 varchar(2), EC8351 varchar(2), EC8352 varchar(2), EC8392 varchar(2), EC8393 varchar(2), EC8361 varchar(2))")
+            cur.execute("create table sem4_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,EC8453 varchar(2), EC8452 varchar(2), GE8291 varchar(2), EC8461 varchar(2), EC8491 varchar(2), MA8451 varchar(2), EC8451 varchar(2), EC8462 varchar(2))")
+            cur.execute("create table sem5_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,EC8553 varchar(2), EC8551 varchar(2), EC8501 varchar(2), EC8563 varchar(2), EC8561 varchar(2), EC8552 varchar(2), EC8562 varchar(2))")
+            cur.execute("create table sem6_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,EC8681 varchar(2), HS8581 varchar(2), EC8611 varchar(2), EC8651 varchar(2), EC8095 varchar(2), EC8652 varchar(2), MG8591 varchar(2), EC8661 varchar(2), EC8691 varchar(2))")
+            cur.execute("create table sem7_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,EC8701 varchar(2), EC8702 varchar(2), EC8751 varchar(2), EC8791 varchar(2), EC8711 varchar(2), EC8761 varchar(2))")
+            cur.execute("create table sem8_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,EC8811 varchar(2))")
+
+            cur.execute("create table sem1_credit_points_21 ('BS3171' Integer,'CY3151' Integer,'GE3151' Integer,'GE3171' Integer,'HS3151' Integer,'MA3151' Integer,'PH3151' Integer)")
+            cur.execute("insert into sem1_credit_points_21 values (2,3,3,2,3,4,3)")
+##            cur.execute("create table sem2_credit_points_21 (checks integer)")
+####            cur.execute("insert into sem2_credit_points_17 values (3,4,3,4,4,3,2,2)");
+##            cur.execute("create table sem3_credit_points_21 (checks integer)")
+####            cur.execute("insert into sem3_credit_points_17 values (3,1,4,2,3,4,3,3,2)");
+##            cur.execute("create table sem4_credit_points_21 (checks integer)")
+########            cur.execute("insert into sem4_credit_points_17 values (3,3,3,2,3,4,4,2)");
+##            cur.execute("create table sem5_credit_points_21 (checks integer)")
+####            cur.execute("insert into sem5_credit_points_17 values (4,3,3,2,2,3,2)");
+##            cur.execute("create table sem6_credit_points_21 (checks integer)")
+####            cur.execute("insert into sem6_credit_points_17 values (2,1,1,3,3,3,3,2,3)");
+##            cur.execute("create table sem7_credit_points_21 (checks integer)")
+####            cur.execute("insert into sem7_credit_points_17 values (3,3,3,3,2,2)");            
+##            cur.execute("create table sem8_credit_points_21 (checks integer)")
+##            cur.execute("insert into sem8_credit_points_17 values (10)");
+            
+            cur.execute("create table sem1_credits_21 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,'BS3171' varchar,'CY3151' varchar,'GE3151' varchar,'GE3171' varchar,'HS3151' varchar,'MA3151' varchar,'PH3151' varchar)");
+##            cur.execute("create table sem2_credits_21 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar)");
+##            cur.execute("create table sem3_credits_21 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar)");
+##            cur.execute("create table sem4_credits_21 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar)");
+##            cur.execute("create table sem5_credits_21 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar)");
+##            cur.execute("create table sem6_credits_21 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar)");
+##            cur.execute("create table sem7_credits_21 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar)");
+##            cur.execute("create table sem8_credits_21 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar)");
+            
+            conn.commit();
         res = cur.execute("select * from default_credit_17")
         val = res.fetchall()
         col = res.description
         for i in range(len(col)):
             self.gra17[col[i][0]] = val[0][i]
-        
+        res = cur.execute("select * from default_credit_21")
+        val = res.fetchall()
+        col = res.description
+        for i in range(len(col)):
+            self.gra21[col[i][0]] = val[0][i]
+                    
         self.extra = ['Sem','Regno','Total','Sum','GPA']
 ##        self.sem1_credit = {'HS8151':4,'MA8151':4,'PH8151':3,'CY8151':3,'GE8151':3,'GE8152':4,'GE8161':2,'BS8161':2}
 ##        self.sem2_credit = {'HS8251':4,'MA8251':4,'PH8253':3,'BE8254':3,'EC8251':4,'EC8252':3,'EC8261':2,'GE8261':2}
@@ -233,11 +302,15 @@ class display:
             if(fl):
                 res = cur.execute("select * from sem{}_credit_points_{}".format(self.semester,self.regulation))
                 value = res.fetchall();
+##                print(res.description)
                 sc = {}
                 for i in range(len(res.description)):
                     sc[res.description[i][0]] = value[0][i];
                 print("\n Credit points are :",sc)
-                gp = st.gra17
+                if(self.regulation == 17):
+                    gp = st.gra17
+                elif(self.regulation == 21):
+                    gp = st.gra21
                 ls = []
                 ls.append(str(self.regulation)+"_SEM_"+str(self.semester))
                 ls.append(name);
@@ -288,95 +361,7 @@ class display:
                 print("\n***** Wrong Input *****")
                 self.a_update();
             elif(rollno == "EXIT"):
-                dis.paths();import sys
-2
-from sqlite3 import connect
-3
-from pandas import DataFrame,read_sql,Series
-4
-from tabulate import tabulate
-5
-conn = connect("chd2.db")
-6
-cur = conn.cursor();
-7
-​
-8
-class Storage:
-9
-    def __init__(self):
-10
-        self.gra21 = {}
-11
-        self.gra17 = {}
-12
-        self.sem1_credit = {}
-13
-        self.sem2_credit = {}
-14
-        self.sem3_credit = {}
-15
-        self.sem4_credit = {}
-16
-        self.extra = []
-17
-        self.default();   
-18
-    def default(self):
-19
-##        self.gra21 = {'O':10,'A+':9,'A':8,'B+':7,'B':6,'C':5,'U':0}
-20
-##        self.gra17 = {'O':10,'A+':9,'A':8,'B+':7,'B':6,'U':0}
-21
-##    def sem_credit(self):
-22
-        res = cur.execute("select tbl_name from sqlite_master where type='table'")
-23
-        if(res.fetchall() == []):
-24
-            cur.execute("create table default_credit_17('O' Ineger,'A+' Integer,'A' Integer, 'B+' Integer,'B' Integer ,'U' Integer)")
-25
-            cur.execute("insert into default_credit_17 values (10, 9, 8, 7, 6, 0);")
-26
-            
-27
-            cur.execute("create table sem1_credit_points_17 ('HS8151' Integer, 'MA8151' Integer, 'PH8151' Integer, 'CY8151' Integer, 'GE8151' Integer, 'GE8152' Integer, 'GE8161'Integer, 'BS8161' Integer);")
-28
-            cur.execute("create table sem2_credit_points_17 ('HS8251' Integer, 'MA8251' Integer, 'PH8253' Integer, 'BE8254' Integer, 'EC8251' Integer, 'EC8252' Integer, 'EC8261'Integer, 'GE8261' Integer);")
-29
-            cur.execute("create table sem3_credit_points_17 ('MA8352' Integer, 'EC8393' Integer, 'EC8351' Integer, 'EC8352' Integer, 'EC8392' Integer, 'EC8391' Integer, 'EC8381'Integer, 'EC8361' Integer,'HS8381' Integer);")
-30
-            cur.execute("create table sem4_credit_points_17 ('MA8451' Integer, 'EC8452' Integer, 'EC8491' Integer, 'EC8451' Integer, 'EC8453' Integer, 'GE8291' Integer, 'EC8461'Integer, 'EC8462' Integer);")
-31
-            cur.execute("create table sem5_credit_points_17 (EC8501 Integer,EC8553 Integer,EC8552 Integer,EC8551 Integer,EC8562 Integer,EC8561 Integer,EC8563 Integer);");
-32
-            cur.execute("create table sem6_credit_points_17 (EC8691 Integer,EC8095 Integer,EC8652 Integer,MG8591 Integer,EC8651 Integer,EC8681 Integer,EC8661 Integer,EC8611 Integer,HS8581 Integer);");
-33
-            cur.execute("create table sem7_credit_points_17 (EC8701 Integer,EC8751 Integer,EC8791 Integer,EC8702 Integer,EC8711 Integer,EC8761 Integer);")
-34
-            cur.execute("create table sem8_credit_points_17 (EC8811 Integer)");
-35
-​
-36
-            cur.execute("insert into sem1_credit_points_17 values (4, 4, 3, 3, 3, 4, 2, 2);")
-37
-            cur.execute("insert into sem2_credit_points_17 values (4, 4, 3, 3, 4, 3, 2, 2);")
-38
-            cur.execute("insert into sem3_credit_points_17 values (4, 3, 3, 4, 3, 3, 2, 2, 1);")
-39
-            cur.execute("insert into sem4_credit_points_17 values (4, 3, 3, 4, 3, 3, 2, 2);")
-40
-            cur.execute("insert into sem5_credit_points_17 values(3,4,3,3,2,2,2);")
-41
-            cur.execute("insert into sem6_credit_points_17 values(3,3,3,3,3,2,2,1,1);")
-42
-            cur.execute("insert into sem7_credit_points_17 values(3,3,3,3,2,2);")
-43
-            cur.execute("insert into sem8_credit_points_17 values(10);")
-44
-                    
-45
-            cur.execute("create table sem1_credits_17 ('Sem' varchar,'Regno' varchar primary key,'Total' varchar,'Sum' varchar,'GPA' varchar,'HS8151' varchar, 'MA8151' varchar, 'PH8151' varchar, 'CY8151' varchar, 'GE8151' varchar, 'GE8152' varchar, 'GE8161'varchar, 'BS8161' varchar);")
+                dis.paths();
             elif(res.fetchall() == []):
                 print("\n***** Roll Number Not Found *****")
                 self.a_update();
@@ -412,7 +397,6 @@ class Storage:
                     else:
                         temp = cur.execute("select Total,Sum from sem{0}_credits_{1} where Regno = '{2}'".format(num,dis.regulation,rollno))
                         ls = list(temp.fetchall()[0])
-                        print(ls)
                         tb_name = "sem{}_credits_{}".format(self.semester,self.regulation);
                         res = cur.execute("select * from sem{}_credit_points_{}".format(num,self.regulation))
                         value = res.fetchall();
